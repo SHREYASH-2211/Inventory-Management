@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router-dom"
 import {
   Home, Package, ShoppingCart, CreditCard, Link2, BarChart2,
-  FileText, ChevronRight
+  FileText, ChevronRight,Warehouse 
 } from "lucide-react"
 import "./Navbar.css"
+import WarehouseManagement from "../Warehouse/Warehouse"
 
 export default function Navbar() {
   const location = useLocation()
@@ -11,6 +12,7 @@ export default function Navbar() {
   const navItems = [
     { label: "Home", icon: <Home />, path: "/" },
     { label: "Inventory", icon: <Package />, hasArrow: true, path: "/inventory" },
+    { label: "Warehouse", icon: <Warehouse/>, hasArrow: true, path: "/warehouse" },
     { label: "Sales", icon: <ShoppingCart />, hasArrow: true, path: "/sales" },
     { label: "Purchases", icon: <CreditCard />, hasArrow: true, path: "/purchases" },
     { label: "Integrations", icon: <Link2 />, path: "/integrations" },

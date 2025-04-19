@@ -1,0 +1,38 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+}
+
+.login-form {
+  max-width: 350px;
+  width: 100%;
+  margin: auto;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #0d6efd;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.input-group-text {
+  background-color: #fff;
+  border-left: 0;
+}
+
+.input-group .form-control {
+  border-right: 0;
+}
+
+.fas {
+  color: #6c757d;
+}

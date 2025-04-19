@@ -165,21 +165,22 @@ const AddItemModal = ({ isOpen, onClose, onAdd }) => {
           </div>
           
           <div className="mb-6">
-            <label className="block text-gray-700 font-medium mb-2">
-              Rate
-            </label>
-            <div className="relative">
-              <span className="absolute left-3 top-3 text-gray-500 font-medium">Rs.</span>
-              <input 
-                type="text"
-                name="rate"
-                value={newItem.rate.startsWith('Rs.') ? newItem.rate.slice(3) : newItem.rate}
-                onChange={handleFormChange}
-                className="w-full p-3 pl-12 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
-                placeholder="0.00"
-              />
-            </div>
-          </div>
+  <label className="block text-gray-700 font-medium mb-2">
+    Rate
+  </label>
+  <div className="relative">
+    <span className="absolute left-3 top-3.5 text-gray-500 font-medium">Rs.</span>
+    <input 
+      type="text"
+      name="rate"
+      value={newItem.rate.startsWith('Rs.') ? newItem.rate.slice(3) : newItem.rate}
+      onChange={handleFormChange}
+      className="w-full p-3 pl-16 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+      placeholder="0.00"
+    />
+  </div>
+</div>
+
           
           {/* Action buttons with improved styling */}
           <div className="flex justify-end space-x-3 border-t border-gray-200 pt-5">
