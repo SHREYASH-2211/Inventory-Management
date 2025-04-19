@@ -1,0 +1,12 @@
+.shipping-integrations {
+  margin-top: var(--spacing-lg);
+}
+
+.no-results {
+  padding: var(--spacing-xl);
+  text-align: center;
+  color: var(--color-text-secondary);
+  background-color: var(--color-background-hover);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-lg);
+}

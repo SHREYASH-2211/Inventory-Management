@@ -14,6 +14,12 @@ const warehouseSchema = new mongoose.Schema({
     postalCode: String,
     country: String,
   },
+  items: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Item",
+    },
+  ],
   contact: {
     name: String,
     phone: String,

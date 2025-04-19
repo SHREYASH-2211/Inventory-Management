@@ -1,0 +1,33 @@
+.marketplace-extensions {
+  margin-top: var(--spacing-lg);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.section-icon {
+  font-size: 24px;
+  margin-right: var(--spacing-sm);
+  color: var(--color-text-secondary);
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.extension-container {
+  margin-bottom: var(--spacing-xl);
+}
+
+.no-results {
+  padding: var(--spacing-xl);
+  text-align: center;
+  color: var(--color-text-secondary);
+  background-color: var(--color-background-hover);
+  border-radius: var(--border-radius-md);
+}

@@ -4,7 +4,7 @@ import {
   FileText, ChevronRight,Warehouse 
 } from "lucide-react"
 import "./Navbar.css"
-import WarehouseManagement from "../Warehouse/Warehouse"
+
 
 export default function Navbar() {
   const location = useLocation()
@@ -14,9 +14,11 @@ export default function Navbar() {
     { label: "Inventory", icon: <Package />, hasArrow: true, path: "/inventory" },
     { label: "Warehouse", icon: <Warehouse/>, hasArrow: true, path: "/warehouse" },
     { label: "Sales", icon: <ShoppingCart />, hasArrow: true, path: "/sales" },
-    { label: "Purchases", icon: <CreditCard />, hasArrow: true, path: "/purchases" },
-    { label: "Integrations", icon: <Link2 />, path: "/integrations" },
     { label: "Reports", icon: <BarChart2 />, path: "/reports" },
+    { label: "Packages", icon: <BarChart2 />, path: "/packages" },
+    { label: "File Upload", icon: <BarChart2 />, path: "/upload" },
+    { label: "Integrations", icon: <Link2 />, path: "/integrations" },
+    { label: "Purchases", icon: <CreditCard />, hasArrow: true, path: "/purchases" },
     { label: "Documents", icon: <FileText />, path: "/documents" },
   ]
 

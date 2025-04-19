@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import './AddWareHouse.css';
+import axios from 'axios';
+import './AddWareHouse.css'; // Optional: for styling
 
-const AddWarehouse = ({ onAdd, onCancel }) => {
+const AddWarehouse = ({ onSuccess }) => {
   const [form, setForm] = useState({
     name: '',
     location: {
@@ -40,9 +41,34 @@ const AddWarehouse = ({ onAdd, onCancel }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAdd(form);
+    try {
+      const res = await axios.post("http://localhost:8000/api/v1/warehouses/", form);
+      alert("Warehouse added successfully!");
+      setForm({
+        name: '',
+        location: {
+          address: '',
+          city: '',
+          state: '',
+          postalCode: '',
+          country: ''
+        },
+        contact: {
+          name: '',
+          phone: '',
+          email: ''
+        },
+        capacity: 0,
+        items: 0,
+        status: 'active'
+      });
+      if (onSuccess) onSuccess();
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Failed to add warehouse.");
+    }
   };
 
   return (
@@ -75,7 +101,6 @@ const AddWarehouse = ({ onAdd, onCancel }) => {
           </select>
           <div className="form-buttons">
             <button type="submit">Add</button>
-            <button type="button" onClick={onCancel}>Cancel</button>
           </div>
         </div>
       </form>

@@ -1,82 +1,19 @@
 "use client"
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState, useEffect, useRef } from "react"
 import {
   Search, Bell, Settings, User, Grid,
   ChevronDown, Plus, RefreshCw, Box, Truck, FileIcon as FileInvoice, BarChart,
-  TrendingUp, DollarSign, ShoppingBag, Layers, AlertTriangle, 
-  LogOut, UserCircle, CreditCard
+  TrendingUp, DollarSign, Smartphone, ShoppingBag, Layers, AlertTriangle
 } from "lucide-react"
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts"
-import { ToastContainer } from "react-toastify"
-import { handleSuccess, handleError } from "../../utils"
 import "./Home.css"
 
 export default function InventoryDashboard() {
   const [activeTab, setActiveTab] = useState("Dashboard")
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false)
-  const [loggedInUser, setLoggedInUser] = useState("")
-  const [products, setProducts] = useState([])
-  const navigate = useNavigate()
-
-  // Fetch logged in user from localStorage
-  useEffect(() => {
-    const user = localStorage.getItem('loggedInUser')
-    if (user) {
-      setLoggedInUser(user)
-    } else {
-      // If no user is logged in, redirect to login
-      navigate('/login')
-    }
-  }, [navigate])
-
-  // Toggle profile menu
-  const handleProfileMenuToggle = () => {
-    setProfileMenuOpen(!profileMenuOpen)
-  }
-
-  // Handle logout functionality - DIRECTLY ATTACHED TO LOGOUT BUTTON
-  const handleLogout = () => {
-    // Clear authentication data
-    localStorage.removeItem('token')
-    localStorage.removeItem('loggedInUser')
-    
-    // Show success message
-    handleSuccess('User Logged out')
-    
-    // Redirect to login page
-    navigate('/login')
-  }
-
-  // Fetch products data
-  const fetchProducts = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        navigate('/login')
-        return
-      }
-
-      const url = 'http://localhost:8080/products'
-      const headers = {
-        headers: {
-          Authorization: token,
-        },
-      }
-      const response = await fetch(url, headers)
-      const result = await response.json()
-      console.log(result)
-      setProducts(result)
-    } catch (err) {
-      handleError(err)
-    }
-  }
-
-  useEffect(() => {
-    fetchProducts()
-  }, [])
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null)
 
   const salesData = [
     { name: 'Week 1', sales: 20000000 },
@@ -85,89 +22,91 @@ export default function InventoryDashboard() {
     { name: 'Week 4', sales: 35880000 },
   ]
 
+  const toggleDropdown = () => {
+    setIsUserDropdownOpen(!isUserDropdownOpen)
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsUserDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   return (
     <div className="inventory-app">
       <div className="main-content">
         {/* Header */}
         <header className="header">
           <div className="header-left">
-            <button className="refresh-btn"><RefreshCw size={18} /></button>
             <div className="search-container">
               <Search size={18} className="search-icon" />
               <input type="text" placeholder="Search in Customers ( / )" className="search-input" />
             </div>
-            <div className="org-info">This is a <span className="test-label">Test</span> organization.</div>
           </div>
-          <div className="header-right">
-            <div className="demo-org">Demo Org <ChevronDown size={16} /></div>
-            {[Plus, User, Bell, Settings, Grid].map((Icon, i) => (
-              <button key={i} className="icon-btn"><Icon size={20} /></button>
-            ))}
-            <div className="user-avatar-container" style={{ position: "relative" }}>
-              <div className="user-avatar" onClick={handleProfileMenuToggle}>
-                <img src="/placeholder.svg?height=32&width=32" alt="User" />
-              </div>
-              
-              {/* Profile Menu */}
-              {profileMenuOpen && (
-                <div className="profile-menu" style={{
-                  position: "absolute",
-                  top: "40px",
-                  right: "0",
-                  background: "white",
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                  borderRadius: "8px",
-                  width: "200px",
-                  zIndex: 1000
-                }}>
-                  <div className="menu-header" style={{
-                    padding: "12px 16px",
-                    borderBottom: "1px solid #eee"
-                  }}>
-                    <div style={{ fontWeight: "bold" }}>{loggedInUser}</div>
-                    <div style={{ fontSize: "12px", color: "#666" }}>{loggedInUser.toLowerCase()}@example.com</div>
+          
+          <div className="header-right">   
+            <div className="header-icons">
+              <button className="icon-button">
+                <Bell size={20} />
+              </button>
+              <button className="icon-button">
+                <Settings size={20} />
+              </button>
+              <div className="user-dropdown" ref={dropdownRef}>
+                <div 
+                  className="user-avatar-container"
+                  onClick={toggleDropdown}
+                >
+                  <div className="user-avatar">
+                    <img src="/placeholder.svg?height=40&width=40" alt="User" />
+                    <div className="user-status"></div>
                   </div>
-                  <div className="menu-items">
-                    <div className="menu-item" onClick={() => console.log("Profile clicked")} style={{
-                      padding: "10px 16px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      cursor: "pointer"
-                    }}>
-                      <UserCircle size={16} />
-                      <span>Profile</span>
-                    </div>
-                    <div className="menu-item" onClick={() => console.log("Account clicked")} style={{
-                      padding: "10px 16px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      cursor: "pointer"
-                    }}>
-                      <CreditCard size={16} />
-                      <span>My Account</span>
-                    </div>
-                    {/* Direct logout button with the handleLogout function */}
-                    <div 
-                      className="menu-item logout" 
-                      onClick={handleLogout} 
-                      style={{
-                        padding: "10px 16px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        borderTop: "1px solid #eee",
-                        color: "#e11d48",
-                        cursor: "pointer"
-                      }}
-                    >
-                      <LogOut size={16} />
-                      <button onClick={handleLogout}>Logout</button>
-                    </div>
-                  </div>
+                  
+                  <ChevronDown size={16} className={`dropdown-chevron ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
                 </div>
-              )}
+                
+                {isUserDropdownOpen && (
+                  <div className="user-dropdown-menu">
+                    <div className="dropdown-content">
+                      <div className="dropdown-header">
+                        {/* <div className="user-avatar">
+                          <img src="/placeholder.svg?height=40&width=40" alt="User" />
+                        </div> */}
+                        <div className="user-info">
+                          <div className="user-name">Demo User</div>
+                          <div className="user-email">demo@example.com</div>
+                        </div>
+                      </div>
+                      <div className="dropdown-divider"></div>
+                      <a href="/profile" className="dropdown-item">
+                        <User size={16} />
+                        <span>Profile</span>
+                      </a>
+                      <a href="/settings" className="dropdown-item">
+                        <Settings size={16} />
+                        <span>Settings</span>
+                      </a>
+                      <div className="dropdown-divider"></div>
+                      <button 
+                        className="dropdown-item logout-item" 
+                        onClick={() => {
+                          console.log('Logging out...')
+                          // window.location.href = '/logout'
+                        }}
+                      >
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </header>
@@ -176,10 +115,6 @@ export default function InventoryDashboard() {
         <div className="welcome-section">
           <div className="welcome-left">
             <div className="user-icon"><User size={24} /></div>
-            <div className="welcome-text">
-              <h2>Hello, {loggedInUser}</h2>
-              <p>Demo Org</p>
-            </div>
           </div>
           <div className="helpline">
             <div>Zoho Inventory India Helpline: <strong>18003093036</strong></div>
@@ -198,25 +133,6 @@ export default function InventoryDashboard() {
 
         {/* Dashboard */}
         <div className="dashboard-content">
-          {/* Products List */}
-          {products && products.length > 0 && (
-            <div className="card products-list">
-              <h3 className="card-title"><ShoppingBag size={18} className="mr-2" /> Available Products</h3>
-              <div className="product-list" style={{ marginTop: "1rem" }}>
-                {products.map((item, index) => (
-                  <div key={index} className="product-item" style={{
-                    padding: "12px",
-                    borderRadius: "8px",
-                    background: "#f8fafc",
-                    marginBottom: "8px"
-                  }}>
-                    <span>{item.name} : ₹{item.price}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Sales Activity */}
           <div className="card sales-activity">
             <h3 className="card-title"><TrendingUp size={18} className="mr-2" /> Sales Activity</h3>
@@ -286,16 +202,15 @@ export default function InventoryDashboard() {
             </div>
           </div>
 
-          {/* Sales Order Summary (Updated with Graph) */}
+          {/* Sales Order Summary */}
           <div className="card sales-summary">
             <div className="sales-summary-header">
               <h3 className="card-title"><DollarSign size={18} className="mr-2" /> Sales Order Summary (in INR)</h3>
               <div className="time-filter">This Month <ChevronDown size={16} /></div>
             </div>
-            <div className="sales-chart-container" style={{ display: "flex", gap: "1rem" }}>
-              {/* Graph Section */}
-              <div className="sales-chart" style={{ width: "70%", height: 300 }}>
-                <ResponsiveContainer width="100%" height="100%">
+            <div className="sales-chart-container">
+              <div className="sales-chart">
+                <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={salesData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
@@ -305,15 +220,13 @@ export default function InventoryDashboard() {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-
-              {/* Total Sales */}
-              <div className="sales-total" style={{ flex: 1, background: "#e9f2ff", padding: "1rem", borderRadius: "8px" }}>
-                <div className="total-sales-label" style={{ fontWeight: "600", marginBottom: "0.5rem" }}>Total Sales</div>
-                <div className="sales-type" style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                  <div className="sales-dot" style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: "#3b82f6" }}></div>
+              <div className="sales-total">
+                <div className="total-sales-label">Total Sales</div>
+                <div className="sales-type">
+                  <div className="sales-dot"></div>
                   <div>DIRECT SALES</div>
                 </div>
-                <div className="sales-amount" style={{ fontSize: "1.5rem", fontWeight: "700", color: "#3b82f6" }}>Rs.110,880,000</div>
+                <div className="sales-amount">Rs.110,880,000</div>
               </div>
             </div>
           </div>
@@ -357,42 +270,6 @@ export default function InventoryDashboard() {
           </footer>
         </div>
       </div>
-
-      {/* Click anywhere outside to close menu */}
-      {profileMenuOpen && (
-        <div 
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 999
-          }}
-          onClick={() => setProfileMenuOpen(false)}
-        />
-      )}
-
-      {/* For direct logout testing - can be removed in production */}
-      <div style={{ position: "fixed", bottom: "20px", right: "20px", zIndex: 1000 }}>
-        <button 
-          className="logout-button" 
-          onClick={handleLogout} 
-          style={{
-            padding: "8px 16px",
-            background: "#e11d48",
-            color: "white",
-            borderRadius: "4px",
-            border: "none",
-            cursor: "pointer"
-          }}
-        >
-          Emergency Logout
-        </button>
-      </div>
-
-      {/* Toast Container for notifications */}
-      <ToastContainer />
     </div>
   )
 }

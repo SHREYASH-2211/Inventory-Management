@@ -1,0 +1,140 @@
+.integration-card {
+  display: flex;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  margin-bottom: var(--spacing-lg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.integration-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-logo-container {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--spacing-lg);
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-md);
+}
+
+.card-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.card-title {
+  font-size: 20px;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-primary);
+}
+
+.card-subtitle {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.card-secondary-text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.card-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-lg);
+  flex-grow: 1;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+}
+
+.action-button {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--border-radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-right: var(--spacing-lg);
+}
+
+.action-button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.learn-button {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.learn-button:hover {
+  color: var(--color-primary);
+}
+
+.learn-button svg {
+  margin-right: var(--spacing-xs);
+}
+
+@media (max-width: 768px) {
+  .integration-card {
+    flex-direction: column;
+    padding: var(--spacing-md);
+  }
+  
+  .card-logo-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--spacing-md) auto;
+  }
+  
+  .card-title {
+    text-align: center;
+  }
+  
+  .card-subtitle {
+    text-align: center;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .action-button {
+    width: 100%;
+    margin-right: 0;
+  }
+}

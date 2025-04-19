@@ -1,4 +1,3 @@
-// App.jsx
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
@@ -12,6 +11,10 @@ import WarehouseManagement from "./pages/Warehouse/Warehouse.jsx";
 import Signup from './pages/Signup/Signup.jsx';
 import Login from './pages/Login/Login.jsx';
 import RefrshHandler from './RefrshHandler';
+import PackageTracker from './pages/Packages/Pakages.jsx';
+import NewSalesOrder from './components/NewSalesOrder';
+import SalesOrderList from './components/SalesOrderList';
+import FileUpload from './pages/Upload/FileUpload.jsx';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,6 +39,13 @@ function App() {
           <Route path="/inventory" element={<PrivateRoute element={<Inventory />} />} />
           <Route path="/reports" element={<PrivateRoute element={<ReportDashboard />} />} />
           <Route path="/warehouse" element={<PrivateRoute element={<WarehouseManagement />} />} />
+
+          {/* 🎯 New Sales Order Routes */}
+          <Route path="/sales" element={<PrivateRoute element={<SalesOrderList />} />} />
+          <Route path="/new-sales-order" element={<NewSalesOrder />} />
+          <Route path="/upload" element={<PrivateRoute element={<FileUpload/>} />} />
+          <Route path="/packages" element={<PrivateRoute element={<PackageTracker/>} />} />
+
         </Routes>
       </div>
     </div>

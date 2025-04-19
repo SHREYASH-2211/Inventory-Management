@@ -1,0 +1,74 @@
+.delivery-partners {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-background-hover);
+}
+
+.partners-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.partners-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.partners-logos {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+}
+
+.partner-logo-container {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.partner-logo {
+  max-height: 100%;
+  max-width: 100px;
+  object-fit: contain;
+}
+
+.view-more-button {
+  display: flex;
+  align-items: center;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.view-more-button:hover {
+  color: var(--color-primary-dark);
+}
+
+.arrow-icon {
+  margin-left: var(--spacing-xs);
+  transition: transform 0.2s;
+}
+
+.arrow-icon.rotated {
+  transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+  .partners-logos {
+    gap: var(--spacing-md);
+    justify-content: center;
+  }
+  
+  .partner-logo-container {
+    height: 30px;
+  }
+  
+  .partner-logo {
+    max-width: 80px;
+  }
+}
