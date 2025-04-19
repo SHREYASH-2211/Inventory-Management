@@ -1,0 +1,66 @@
+/* Navbar.css */
+.sidebar {
+    width: 250px;
+    background-color: #1e293b;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .sidebar-header {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .sidebar-logo-icon {
+    margin-right: 12px;
+    color: #3b82f6;
+  }
+  
+  .sidebar-header h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .sidebar-nav {
+    padding: 16px 0;
+    flex: 1;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    margin: 6px 12px;
+    border-radius: 10px;
+    color: #e2e8f0;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  
+  .nav-item:hover {
+    background-color: #334155;
+  }
+  
+  .nav-item.active {
+    background-color: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+  
+  .nav-icon {
+    margin-right: 12px;
+  }
+  
+  .nav-chevron {
+    margin-left: auto;
+    opacity: 0.5;
+  }
+  
