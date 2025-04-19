@@ -1,9 +1,8 @@
-// WarehouseManagement.jsx
 import React, { useState } from 'react';
 import './Warehouse.css';
+import AddWarehouse from './add_warehouse';
 
 const WarehouseManagement = () => {
-  // Sample warehouse data
   const [warehouses, setWarehouses] = useState([
     {
       id: 'A',
@@ -40,45 +39,37 @@ const WarehouseManagement = () => {
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [showForm, setShowForm] = useState(false);
 
-  // Function to determine progress bar color based on percentage
   const getProgressBarColor = (percentage) => {
-    if (percentage < 40) return 'progress-bar-green';
     if (percentage < 70) return 'progress-bar-green';
     return 'progress-bar-yellow';
   };
 
-  // Filter warehouses based on search term
-  const filteredWarehouses = warehouses.filter(warehouse => 
+  const filteredWarehouses = warehouses.filter((warehouse) =>
     warehouse.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
     warehouse.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
     warehouse.manager.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleDeleteWarehouse = (id) => {
+    setWarehouses(prev => prev.filter((wh) => wh.id !== id));
+  };
+
   return (
     <div className="container">
-      {/* Header */}
       <div className="header">
         <h1>Warehouse Management</h1>
-        <button className="add-button">
+        <button className="add-button" onClick={() => setShowForm(true)}>
           <span>+</span> Add Warehouse
         </button>
       </div>
 
-      {/* Search bar */}
+      {/* Search Bar */}
       <div className="search-container">
-        <svg 
-          className="search-icon" 
-          width="18" 
-          height="18" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        <svg className="search-icon" width="18" height="18" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" strokeWidth="2" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" strokeWidth="2" />
         </svg>
         <input
           type="text"
@@ -89,27 +80,45 @@ const WarehouseManagement = () => {
         />
       </div>
 
-      {/* Warehouse grid */}
+      {showForm && (
+        <AddWarehouse
+          onAdd={(newWarehouse) => {
+            const percentFull = newWarehouse.capacity > 0
+              ? Math.round((newWarehouse.items / newWarehouse.capacity) * 100)
+              : 0;
+
+            const id = Date.now().toString(); // Unique ID using timestamp
+
+            const newEntry = {
+              id,
+              address: `${newWarehouse.location.address}, ${newWarehouse.location.city}, ${newWarehouse.location.state}`,
+              manager: newWarehouse.contact.name,
+              items: newWarehouse.items,
+              capacity: {
+                current: newWarehouse.items,
+                total: newWarehouse.capacity
+              },
+              percentFull
+            };
+
+            setWarehouses(prev => [...prev, newEntry]);
+            setShowForm(false);
+          }}
+          onCancel={() => setShowForm(false)}
+        />
+      )}
+
+      {/* Warehouse Cards */}
       <div className="warehouse-grid">
         {filteredWarehouses.map((warehouse) => (
           <div key={warehouse.id} className="warehouse-card">
-            {/* Warehouse header */}
             <div className="warehouse-header">
               <div>
                 <h2>Warehouse {warehouse.id}</h2>
                 <div className="location">
-                  <svg 
-                    className="location-icon" 
-                    width="14" 
-                    height="14" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
+                  <svg className="location-icon" width="14" height="14" viewBox="0 0 24 24">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="none" stroke="currentColor" strokeWidth="2" />
+                    <circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
                   </svg>
                   <span>{warehouse.address}</span>
                 </div>
@@ -119,46 +128,25 @@ const WarehouseManagement = () => {
               </div>
             </div>
 
-            {/* Manager info */}
             <div className="info-row">
-              <svg 
-                className="info-icon" 
-                width="14" 
-                height="14" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
+              <svg className="info-icon" width="14" height="14" viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="currentColor" strokeWidth="2" />
+                <circle cx="12" cy="7" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
               </svg>
               <span className="info-label">Manager:</span>
               <span className="info-value">{warehouse.manager}</span>
             </div>
 
-            {/* Items count */}
             <div className="info-row">
-              <svg 
-                className="info-icon" 
-                width="14" 
-                height="14" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              <svg className="info-icon" width="14" height="14" viewBox="0 0 24 24">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" fill="none" stroke="currentColor" strokeWidth="2" />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" fill="none" stroke="currentColor" strokeWidth="2" />
+                <line x1="12" y1="22.08" x2="12" y2="12" stroke="currentColor" strokeWidth="2" />
               </svg>
               <span className="info-label">Items:</span>
               <span className="info-value">{warehouse.items}</span>
             </div>
 
-            {/* Capacity */}
             <div className="capacity-container">
               <div className="capacity-header">
                 <span className="info-label">Capacity:</span>
@@ -174,10 +162,10 @@ const WarehouseManagement = () => {
               </div>
             </div>
 
-            {/* Action buttons */}
             <div className="action-buttons">
               <button className="action-button">View Details</button>
               <button className="action-button">Manage Stock</button>
+              <button className="action-button delete-button" onClick={() => handleDeleteWarehouse(warehouse.id)}>Delete</button>
             </div>
           </div>
         ))}

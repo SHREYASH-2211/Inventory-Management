@@ -1,18 +1,82 @@
 "use client"
-// import Navbar from "../Navbar/Navbar"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import {
   Search, Bell, Settings, User, Grid,
   ChevronDown, Plus, RefreshCw, Box, Truck, FileIcon as FileInvoice, BarChart,
-  TrendingUp, DollarSign, Smartphone, ShoppingBag, Layers, AlertTriangle
+  TrendingUp, DollarSign, ShoppingBag, Layers, AlertTriangle, 
+  LogOut, UserCircle, CreditCard
 } from "lucide-react"
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts"
+import { ToastContainer } from "react-toastify"
+import { handleSuccess, handleError } from "../../utils"
 import "./Home.css"
 
 export default function InventoryDashboard() {
   const [activeTab, setActiveTab] = useState("Dashboard")
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+  const [loggedInUser, setLoggedInUser] = useState("")
+  const [products, setProducts] = useState([])
+  const navigate = useNavigate()
+
+  // Fetch logged in user from localStorage
+  useEffect(() => {
+    const user = localStorage.getItem('loggedInUser')
+    if (user) {
+      setLoggedInUser(user)
+    } else {
+      // If no user is logged in, redirect to login
+      navigate('/login')
+    }
+  }, [navigate])
+
+  // Toggle profile menu
+  const handleProfileMenuToggle = () => {
+    setProfileMenuOpen(!profileMenuOpen)
+  }
+
+  // Handle logout functionality - DIRECTLY ATTACHED TO LOGOUT BUTTON
+  const handleLogout = () => {
+    // Clear authentication data
+    localStorage.removeItem('token')
+    localStorage.removeItem('loggedInUser')
+    
+    // Show success message
+    handleSuccess('User Logged out')
+    
+    // Redirect to login page
+    navigate('/login')
+  }
+
+  // Fetch products data
+  const fetchProducts = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login')
+        return
+      }
+
+      const url = 'http://localhost:8080/products'
+      const headers = {
+        headers: {
+          Authorization: token,
+        },
+      }
+      const response = await fetch(url, headers)
+      const result = await response.json()
+      console.log(result)
+      setProducts(result)
+    } catch (err) {
+      handleError(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
 
   const salesData = [
     { name: 'Week 1', sales: 20000000 },
@@ -39,8 +103,71 @@ export default function InventoryDashboard() {
             {[Plus, User, Bell, Settings, Grid].map((Icon, i) => (
               <button key={i} className="icon-btn"><Icon size={20} /></button>
             ))}
-            <div className="user-avatar">
-              <img src="/placeholder.svg?height=32&width=32" alt="User" />
+            <div className="user-avatar-container" style={{ position: "relative" }}>
+              <div className="user-avatar" onClick={handleProfileMenuToggle}>
+                <img src="/placeholder.svg?height=32&width=32" alt="User" />
+              </div>
+              
+              {/* Profile Menu */}
+              {profileMenuOpen && (
+                <div className="profile-menu" style={{
+                  position: "absolute",
+                  top: "40px",
+                  right: "0",
+                  background: "white",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  borderRadius: "8px",
+                  width: "200px",
+                  zIndex: 1000
+                }}>
+                  <div className="menu-header" style={{
+                    padding: "12px 16px",
+                    borderBottom: "1px solid #eee"
+                  }}>
+                    <div style={{ fontWeight: "bold" }}>{loggedInUser}</div>
+                    <div style={{ fontSize: "12px", color: "#666" }}>{loggedInUser.toLowerCase()}@example.com</div>
+                  </div>
+                  <div className="menu-items">
+                    <div className="menu-item" onClick={() => console.log("Profile clicked")} style={{
+                      padding: "10px 16px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      cursor: "pointer"
+                    }}>
+                      <UserCircle size={16} />
+                      <span>Profile</span>
+                    </div>
+                    <div className="menu-item" onClick={() => console.log("Account clicked")} style={{
+                      padding: "10px 16px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      cursor: "pointer"
+                    }}>
+                      <CreditCard size={16} />
+                      <span>My Account</span>
+                    </div>
+                    {/* Direct logout button with the handleLogout function */}
+                    <div 
+                      className="menu-item logout" 
+                      onClick={handleLogout} 
+                      style={{
+                        padding: "10px 16px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        borderTop: "1px solid #eee",
+                        color: "#e11d48",
+                        cursor: "pointer"
+                      }}
+                    >
+                      <LogOut size={16} />
+                      <button onClick={handleLogout}>Logout</button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </header>
@@ -50,7 +177,7 @@ export default function InventoryDashboard() {
           <div className="welcome-left">
             <div className="user-icon"><User size={24} /></div>
             <div className="welcome-text">
-              <h2>Hello, Demo User</h2>
+              <h2>Hello, {loggedInUser}</h2>
               <p>Demo Org</p>
             </div>
           </div>
@@ -71,6 +198,25 @@ export default function InventoryDashboard() {
 
         {/* Dashboard */}
         <div className="dashboard-content">
+          {/* Products List */}
+          {products && products.length > 0 && (
+            <div className="card products-list">
+              <h3 className="card-title"><ShoppingBag size={18} className="mr-2" /> Available Products</h3>
+              <div className="product-list" style={{ marginTop: "1rem" }}>
+                {products.map((item, index) => (
+                  <div key={index} className="product-item" style={{
+                    padding: "12px",
+                    borderRadius: "8px",
+                    background: "#f8fafc",
+                    marginBottom: "8px"
+                  }}>
+                    <span>{item.name} : ₹{item.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Sales Activity */}
           <div className="card sales-activity">
             <h3 className="card-title"><TrendingUp size={18} className="mr-2" /> Sales Activity</h3>
@@ -211,6 +357,42 @@ export default function InventoryDashboard() {
           </footer>
         </div>
       </div>
+
+      {/* Click anywhere outside to close menu */}
+      {profileMenuOpen && (
+        <div 
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 999
+          }}
+          onClick={() => setProfileMenuOpen(false)}
+        />
+      )}
+
+      {/* For direct logout testing - can be removed in production */}
+      <div style={{ position: "fixed", bottom: "20px", right: "20px", zIndex: 1000 }}>
+        <button 
+          className="logout-button" 
+          onClick={handleLogout} 
+          style={{
+            padding: "8px 16px",
+            background: "#e11d48",
+            color: "white",
+            borderRadius: "4px",
+            border: "none",
+            cursor: "pointer"
+          }}
+        >
+          Emergency Logout
+        </button>
+      </div>
+
+      {/* Toast Container for notifications */}
+      <ToastContainer />
     </div>
   )
 }

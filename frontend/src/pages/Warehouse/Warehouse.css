@@ -1,223 +1,350 @@
-/* WarehouseManagement.css */
-
 /* Base styles */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
-  
-  body {
-    background-color: #f7f9fc;
-    color: #333;
-    line-height: 1.5;
-  }
-  
-  /* Container */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px;
-  }
-  
-  /* Header */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-  
-  .header h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-  }
-  
-  .add-button {
-    background-color: #3366ff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
-  }
-  
-  .add-button span {
-    margin-right: 4px;
-    font-size: 16px;
-  }
-  
-  .add-button:hover {
-    background-color: #254edb;
-  }
-  
-  /* Search */
-  .search-container {
-    position: relative;
-    margin-bottom: 24px;
-  }
-  
-  .search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 10px 16px 10px 40px;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    font-size: 14px;
-    outline: none;
-  }
-  
-  .search-input:focus {
-    border-color: #3366ff;
-    box-shadow: 0 0 0 2px rgba(51, 102, 255, 0.2);
-  }
-  
-  /* Warehouse Grid */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  background-color: #f7f9fc;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.add-button {
+  background-color: #3366ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.add-button span {
+  margin-right: 4px;
+  font-size: 16px;
+}
+
+.add-button:hover {
+  background-color: #254edb;
+}
+
+/* Search */
+.search-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #3366ff;
+  box-shadow: 0 0 0 2px rgba(51, 102, 255, 0.2);
+}
+
+/* Warehouse Grid */
+.warehouse-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
   .warehouse-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  @media (min-width: 768px) {
-    .warehouse-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+}
+
+@media (min-width: 1024px) {
+  .warehouse-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  @media (min-width: 1024px) {
-    .warehouse-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
-  /* Warehouse Card */
-  .warehouse-card {
-    background-color: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 16px;
-  }
-  
-  /* Warehouse Header */
-  .warehouse-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-  }
-  
-  .warehouse-header h2 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  
-  .location {
-    display: flex;
-    align-items: center;
-    color: #6b7280;
-    font-size: 14px;
-    margin-top: 4px;
-  }
-  
-  .location-icon {
-    margin-right: 4px;
-    color: #6b7280;
-  }
-  
-  .percent-full {
-    font-size: 14px;
-    font-weight: 500;
-    color: #4b5563;
-  }
-  
-  /* Info Rows */
-  .info-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  
-  .info-icon {
-    color: #6b7280;
-    margin-right: 4px;
-  }
-  
-  .info-label {
-    font-size: 14px;
-    color: #6b7280;
-    margin-right: 4px;
-  }
-  
-  .info-value {
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  /* Capacity */
-  .capacity-container {
-    margin-bottom: 16px;
-  }
-  
-  .capacity-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 4px;
-  }
-  
-  .progress-bar-bg {
-    height: 8px;
-    width: 100%;
-    background-color: #e5e7eb;
-    border-radius: 9999px;
-    overflow: hidden;
-  }
-  
-  .progress-bar {
-    height: 100%;
-    border-radius: 9999px;
-  }
-  
-  .progress-bar-green {
-    background-color: #22c55e;
-  }
-  
-  .progress-bar-yellow {
-    background-color: #eab308;
-  }
-  
-  /* Action Buttons */
-  .action-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 16px;
-  }
-  
-  .action-button {
-    font-size: 14px;
-    font-weight: 500;
-    color: #3366ff;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-  
-  .action-button:hover {
-    color: #254edb;
-    text-decoration: underline;
-  }
+}
+
+/* Warehouse Card */
+.warehouse-card {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* Warehouse Header */
+.warehouse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.warehouse-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.location-icon {
+  margin-right: 4px;
+  color: #6b7280;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.percent-full {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+/* Info Rows */
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.info-icon {
+  color: #6b7280;
+  margin-right: 4px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-right: 4px;
+}
+
+.info-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Capacity */
+.capacity-container {
+  margin-bottom: 16px;
+}
+
+.capacity-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.progress-bar-bg {
+  height: 8px;
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+.progress-bar-green {
+  background-color: #22c55e;
+}
+
+.progress-bar-yellow {
+  background-color: #eab308;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.action-button {
+  font-size: 14px;
+  font-weight: 500;
+  color: #3366ff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.action-button:hover {
+  color: #254edb;
+  text-decoration: underline;
+}
+
+.delete-button {
+  color: #ef4444;
+}
+
+.delete-button:hover {
+  color: #dc2626;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* The transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 1001;
+}
+
+
+.modal h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.form-section-title {
+  font-size: 16px;
+  color: #4b5563;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal input,
+.modal select {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.modal input:focus,
+.modal select:focus {
+  border-color: #3366ff;
+  box-shadow: 0 0 0 2px rgba(51, 102, 255, 0.2);
+}
+
+.status-selector {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.status-selector label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-right: 12px;
+  min-width: 50px;
+}
+
+.status-selector select {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-buttons button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-buttons button:first-of-type {
+  background-color: #3366ff;
+  color: white;
+}
+
+.modal-buttons button:first-of-type:hover {
+  background-color: #254edb;
+}
+
+.modal-buttons button:last-of-type {
+  background-color: #e5e7eb;
+}
+
+.modal-buttons button:last-of-type:hover {
+  background-color: #d1d5db;
+}
