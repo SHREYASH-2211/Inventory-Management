@@ -1,0 +1,6 @@
+Name,SKU,Description,Quantity,Price (₹),Low Stock Threshold,Warehouse Name
+USB-C Cable,USB-001,Fast charging USB Type-C cable,10,299,5,Main Warehouse
+Thermal Printer,TP-900,POS thermal receipt printer,3,4200,5,Main Warehouse
+Barcode Scanner,BAR-123,USB barcode scanner for POS,2,1899,4,Main Warehouse
+HDMI Cable,HDMI-002,4K High-Speed HDMI cable,15,499,7,Main Warehouse
+Receipt Paper Roll,PAPER-321,Standard 80mm thermal roll,100,35,20,Main Warehouse

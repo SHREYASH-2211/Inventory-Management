@@ -44,7 +44,7 @@ const AddWarehouse = ({ onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/warehouses/", form);
+      const res = await axios.post("http://192.168.252.193:8000/api/v1/warehouses/", form);
       alert("Warehouse added successfully!");
       setForm({
         name: '',

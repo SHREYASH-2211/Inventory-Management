@@ -1,0 +1,29 @@
+name,sku,type,description,price,quantity,lowStockThreshold,warehouse
+Chair,SKU-001,Goods,Ergonomic chair,2999,10,2,66194a4124576aa1f5b9c83a
+Lamp,SKU-002,Goods,LED Desk Lamp,899,15,3,66194a4124576aa1f5b9c83a
+Book,SKU-003,Goods,Math textbook,499,50,5,66194a4124576aa1f5b9c83a
+Phone Stand,SKU-100,Goods,Top rated item,1415,60,6,66194a4124576aa1f5b9c83a
+Table,SKU-101,Goods,Eco-friendly material,4388,68,7,66194a4124576aa1f5b9c83a
+Bottle,SKU-102,Goods,User-friendly,1205,66,4,66194a4124576aa1f5b9c83a
+Backpack,SKU-103,Goods,High quality item,2471,24,4,66194a4124576aa1f5b9c83a
+Phone Stand,SKU-104,Goods,Eco-friendly material,4659,45,3,66194a4124576aa1f5b9c83a
+Phone Stand,SKU-105,Goods,Top rated item,519,77,10,66194a4124576aa1f5b9c83a
+Notebook,SKU-106,Goods,Eco-friendly material,4895,44,5,66194a4124576aa1f5b9c83a
+Notebook,SKU-107,Goods,User-friendly,1289,61,5,66194a4124576aa1f5b9c83a
+Table,SKU-108,Goods,Budget-friendly,2574,40,9,66194a4124576aa1f5b9c83a
+Notebook,SKU-109,Goods,Eco-friendly material,4872,43,6,66194a4124576aa1f5b9c83a
+Backpack,SKU-110,Goods,Best in class,4000,9,2,66194a4124576aa1f5b9c83a
+Bottle,SKU-111,Goods,High quality item,4057,71,3,66194a4124576aa1f5b9c83a
+Backpack,SKU-112,Goods,Top rated item,1173,18,9,66194a4124576aa1f5b9c83a
+Pen,SKU-113,Goods,Top rated item,1473,8,9,66194a4124576aa1f5b9c83a
+Pen,SKU-114,Goods,High quality item,4932,96,3,66194a4124576aa1f5b9c83a
+Bottle,SKU-115,Goods,Compact design,1173,87,1,66194a4124576aa1f5b9c83a
+Pen,SKU-116,Goods,Compact design,347,78,9,66194a4124576aa1f5b9c83a
+Mouse,SKU-117,Goods,High quality item,1632,80,7,66194a4124576aa1f5b9c83a
+Bottle,SKU-118,Goods,High quality item,4993,90,1,66194a4124576aa1f5b9c83a
+Notebook,SKU-119,Goods,Premium product,1217,100,7,66194a4124576aa1f5b9c83a
+Monitor,SKU-120,Goods,Durable and long-lasting,979,82,1,66194a4124576aa1f5b9c83a
+Notebook,SKU-121,Goods,Durable and long-lasting,1913,24,6,66194a4124576aa1f5b9c83a
+Pen,SKU-122,Goods,Budget-friendly,1363,29,7,66194a4124576aa1f5b9c83a
+Pen,SKU-123,Goods,Compact design,4605,56,1,66194a4124576aa1f5b9c83a
+Notebook,SKU-124,Goods,Compact design,1754,72,10,66194a4124576aa1f5b9c83a

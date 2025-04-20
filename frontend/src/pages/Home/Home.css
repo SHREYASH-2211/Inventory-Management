@@ -882,3 +882,26 @@ body {
     margin-bottom: 24px;
   }
 }
+/* Chatbot Styles */
+.chatbot-message {
+  transition: all 0.3s ease;
+}
+
+.chatbot-message.user {
+  margin-left: auto;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 1rem 1rem 0 1rem;
+}
+
+.chatbot-message.bot {
+  margin-right: auto;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border-radius: 1rem 1rem 1rem 0;
+}
+
+.chatbot-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #bfdbfe;
+}

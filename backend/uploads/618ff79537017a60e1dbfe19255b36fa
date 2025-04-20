@@ -1,0 +1,4 @@
+name,sku,type,description,price,quantity,lowStockThreshold,warehouse
+Chair,SKU-001,Goods,Ergonomic chair,2999,10,2,66194a4124576aa1f5b9c83a
+Lamp,SKU-002,Goods,LED Desk Lamp,899,15,3,66194a4124576aa1f5b9c83a
+Book,SKU-003,Goods,Math textbook,499,50,5,66194a4124576aa1f5b9c83a

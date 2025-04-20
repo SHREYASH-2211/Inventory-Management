@@ -25,8 +25,9 @@
 }
 
 .input-group-text {
-  background-color: #fff;
+  background-color: transparent;
   border-left: 0;
+  border: none;
 }
 
 .input-group .form-control {

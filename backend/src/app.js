@@ -18,6 +18,8 @@ import warehouseRouter from "./routes/warehouse.routes.js";
 import stockMovementRouter from "./routes/stockMovement.routes.js";
 import itemRouter from "./routes/item.routes.js";
 import analyticsRoutes from "./routes/analytics.routes.js";
+import bulkRouter from "./routes/bulk.routes.js";
+import salesRouter from "./routes/sales.routes.js";
 //Routes declaration
 app.use("/api/v1/users", userRouter);
  app.use("/api/v1/warehouses", warehouseRouter);
@@ -26,5 +28,7 @@ app.use("/api/v1/users", userRouter);
 //http://localhost:5000/api/v1/users/register
 
 app.use("/api/v1/analytics", analyticsRoutes);
+app.use("/api/v1/bulkcsv", bulkRouter);
+app.use("/api/v1/sales", salesRouter);
 
 export default app;

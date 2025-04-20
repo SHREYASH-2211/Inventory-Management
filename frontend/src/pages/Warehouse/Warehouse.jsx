@@ -14,7 +14,7 @@ const WarehouseManagement = () => {
 
   const fetchWarehouses = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/v1/warehouses/');
+      const res = await axios.get('http://192.168.252.193:8000/api/v1/warehouses/');
       const formatted = res.data.map((w) => {
         const percentFull = w.capacity > 0 ? Math.round((w.items / w.capacity) * 100) : 0;
         return {
@@ -49,7 +49,7 @@ const WarehouseManagement = () => {
 
   const handleDeleteWarehouse = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/warehouses/${id}`);
+      await axios.delete(`http://192.168.252.193:8000/api/v1/warehouses/${id}`);
       setWarehouses(prev => prev.filter((wh) => wh.id !== id));
     } catch (err) {
       console.error('Failed to delete warehouse:', err);

@@ -1,30 +1,24 @@
 import { Router } from "express";
 import { loginUser, logoutUser, registerUser,refreshAccessToken, changeCurrentPassword } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { requireAuth, authorizeRoles } from "../middlewares/authMiddleware.js";
+
 const router = Router();
 router.route("/register").post(
-    upload.fields([
-        {
-            name: "avatar",
-            maxCount: 1
-        },
-        {
-            name: "coverImage",
-            maxCount: 1
-        } 
-    ]),
-    registerUser)
+    registerUser
+  );
+  
 
  router.route("/login").post(loginUser)
  //secured routes
- router.route("/logout").post(verifyJWT,logoutUser)  
- //here verifyJWT middleware will check if the user is logged in or not and then logout the user
+// Example: Only admin can logout others
+router.route("/logout").post(requireAuth, authorizeRoles("admin", "manager", "staff"), logoutUser);
+
+// Example: Only staff and above can change password
+router.route("/change-password").post(requireAuth, authorizeRoles("staff", "manager", "admin"), changeCurrentPassword);
 
  router.route("/refresh-token").post(refreshAccessToken)
     
- router.route("/change-password").post(verifyJWT,changeCurrentPassword)
-//here verifyJWT middleware will check if the user is logged in or not and then change the password of the user
 
 
 export default router;

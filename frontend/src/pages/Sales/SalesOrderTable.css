@@ -1,0 +1,376 @@
+.sales-order-container {
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    position: relative;
+  }
+  
+  .sales-order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .sales-order-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .sales-order-title h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .dropdown-icon {
+    margin-left: 8px;
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .sales-order-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .new-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .new-button:hover {
+    background-color: #4338ca;
+  }
+  
+  .back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #4f46e5;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .back-button:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .more-options, .help-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    color: #6b7280;
+    transition: background-color 0.2s;
+  }
+  
+  .more-options:hover, .help-button:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .sales-order-table-container {
+    overflow-x: auto;
+  }
+  
+  .sales-order-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .sales-order-table th,
+  .sales-order-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .sales-order-table th {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b7280;
+    text-transform: uppercase;
+  }
+  
+  .sales-order-row {
+    transition: background-color 0.2s;
+  }
+  
+  .sales-order-row:hover {
+    background-color: #f9fafb;
+  }
+  
+  .order-number {
+    color: #4f46e5;
+    font-weight: 500;
+  }
+  
+  .checkbox-column {
+    width: 40px;
+  }
+  
+  .search-column {
+    width: 80px;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  /* Status badge colors */
+  .status-badge.invoiced {
+    background-color: #f3e8ff;
+    color: #6b21a8;
+  }
+  
+  .status-badge.approval-overdue {
+    background-color: #fff1f2;
+    color: #be123c;
+  }
+  
+  .status-badge.void {
+    background-color: #f3f4f6;
+    color: #4b5563;
+  }
+  
+  .status-badge.open {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  .status-badge.approved {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+  
+  .circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #e5e7eb;
+    display: inline-block;
+  }
+  
+  .circle.filled {
+    background-color: #10b981;
+    border-color: #10b981;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .actions button {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #6b7280;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .actions button:hover {
+    background-color: #f3f4f6;
+  }
+  
+  /* Form container styles */
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #374151;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #4f46e5;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+  }
+  
+  .checkbox-group {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .checkbox-item input[type="checkbox"] {
+    width: auto;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .cancel-button {
+    padding: 8px 16px;
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .submit-button {
+    padding: 8px 16px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .submit-button:hover {
+    background-color: #4338ca;
+  }
+  
+  /* Guide modal styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    position: relative;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 24px;
+    z-index: 1001;
+  }
+  
+  .guide-modal {
+    max-width: 600px;
+  }
+  
+  .guide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .guide-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+  }
+  
+  .guide-content h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 24px 0 12px 0;
+    color: #111827;
+  }
+  
+  .guide-content h3:first-child {
+    margin-top: 0;
+  }
+  
+  .guide-content ul {
+    padding-left: 20px;
+    margin: 0;
+  }
+  
+  .guide-content li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #4b5563;
+  }
+  
+  .guide-content strong {
+    color: #111827;
+  }

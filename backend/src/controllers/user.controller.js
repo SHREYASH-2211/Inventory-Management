@@ -19,47 +19,52 @@ return {accessToken, refreshToken};
     }
     
 }
-const registerUser= asyncHandler(async (req, res) => {
-   
-
-    const {fullname, username, email, password,role } = req.body;
-    console.log("email:", email);
-    console.log("fullname:", fullname);
-    if([fullname==="", username==="", email==="", password==="",role===""].includes(true)){ {
-        throw new ApiError(400,"All fields are required" );
+const registerUser = asyncHandler(async (req, res) => {
+    const { fullname, username, email, password, role } = req.body;
+  
+    console.log("📩 Email:", email);
+    console.log("👤 Full Name:", fullname);
+  
+    // 🔍 Input Validation
+    if (!fullname || !username || !email || !password || !role) {
+      throw new ApiError(400, "All fields are required");
     }
+  
+    if (!email.includes("@")) {
+      throw new ApiError(400, "Email is not valid");
     }
-    if(email.includes("@")===false){
-        throw new ApiError(400,"Email is not valid" );
-    } 
-
-   const existedUser= await User.findOne({
-        $or: [{username}, {email}]
-    })
-
-    if(existedUser){
-        throw new ApiError(409,"Username or email already exists" );
-    }
-
-
-
-
-    
-   const user=await User.create({
-        fullname,
-        username: username.toLowerCase(),
-        email,
-        password,
-        role: role.toLowerCase()
+  
+    // 🔍 Check for duplicate user
+    const existedUser = await User.findOne({
+      $or: [{ username: username.toLowerCase() }, { email: email.toLowerCase() }]
     });
-   const createdUser=await User.findById(user._id).select("-password -refreshToken");
-   if(!createdUser){
-        throw new ApiError(500,"Something went wrong while registering the user" );
+  
+    if (existedUser) {
+      throw new ApiError(409, "Username or email already exists");
     }
+  
+    // 👤 Create User
+    const user = await User.create({
+      fullname,
+      username: username.toLowerCase(),
+      email: email.toLowerCase(),
+      password,
+      role: role.toLowerCase(),
+    });
+  
+    // 🧼 Exclude sensitive fields
+    const createdUser = await User.findById(user._id).select("-password -refreshToken");
+  
+    if (!createdUser) {
+      throw new ApiError(500, "Something went wrong while registering the user");
+    }
+  
+    // 🎉 Respond
     return res.status(201).json(
-        new ApiResponse(200,createdUser,"User registered successfully")
-    )
-});
+      new ApiResponse(200, createdUser, "User registered successfully")
+    );
+  });
+  
 
 const loginUser= asyncHandler(async (req, res) => {
 //req body->data

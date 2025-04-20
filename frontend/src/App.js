@@ -12,9 +12,12 @@ import Signup from './pages/Signup/Signup.jsx';
 import Login from './pages/Login/Login.jsx';
 import RefrshHandler from './RefrshHandler';
 import PackageTracker from './pages/Packages/Pakages.jsx';
-import NewSalesOrder from './components/NewSalesOrder';
-import SalesOrderList from './components/SalesOrderList';
-import FileUpload from './pages/Upload/FileUpload.jsx';
+import SalesOrderTable from './pages/Sales/SalesOrderTable.jsx';
+import Shipping from './pages/Shipping/Shipping.jsx';
+import FileUpload from './pages/Upload/FileUpload.jsx'
+import StockMovementApp from './pages/Stock/Stock.jsx';
+// import AddSalesOrderForm from './pages/Sales/AddSalesOrderTable.jsx';
+// import { salesOrdersData as initialOrders } from './pages/Sales/salesOrdersData.jsx'; // import the dummy data
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -39,13 +42,15 @@ function App() {
           <Route path="/inventory" element={<PrivateRoute element={<Inventory />} />} />
           <Route path="/reports" element={<PrivateRoute element={<ReportDashboard />} />} />
           <Route path="/warehouse" element={<PrivateRoute element={<WarehouseManagement />} />} />
-
-          {/* 🎯 New Sales Order Routes */}
-          <Route path="/sales" element={<PrivateRoute element={<SalesOrderList />} />} />
-          <Route path="/new-sales-order" element={<NewSalesOrder />} />
-          <Route path="/upload" element={<PrivateRoute element={<FileUpload/>} />} />
-          <Route path="/packages" element={<PrivateRoute element={<PackageTracker/>} />} />
-
+          <Route path="/upload" element={<PrivateRoute element={<FileUpload />} />} />
+          
+          {/* Sales Orders Routes */}
+          <Route path="/sales" element={<SalesOrderTable/>} />
+          {/* <Route path="/sales/new" element={<AddSalesOrderForm setSalesOrders={setSalesOrders} />} /> */}
+          
+          <Route path="/packages" element={<PrivateRoute element={<PackageTracker />} />} />
+          <Route path="/shipping" element={<PrivateRoute element={<Shipping />} />} />
+          <Route path="/stock" element={<PrivateRoute element={<StockMovementApp />} />} />
         </Routes>
       </div>
     </div>

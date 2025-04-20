@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { Search, LayoutGrid, List, HelpCircle, AlignJustify, X, Package, Plus } from 'lucide-react';
+import './Packages.css';
 
 const mockItems = [
   { id: 1, name: 'Laptop', price: 999.99 },
@@ -143,32 +144,32 @@ const AddPackageModal = ({ onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div className="modal-overlay">
       <div 
         ref={modalRef}
-        className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-fadeIn"
+        className="modal-content"
       >
-        <div className="border-b p-4 flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">Add New Package</h2>
+        <div className="modal-header">
+          <h2 className="modal-title">Add New Package</h2>
           <button 
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="modal-close-btn"
           >
             <X size={20} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+        <form onSubmit={handleSubmit} className="modal-body">
+          <div className="form-grid">
+            <div className="form-group">
+              <label className="form-label">
                 Channel *
               </label>
               <select
                 required
                 value={formData.channel}
                 onChange={(e) => setFormData({...formData, channel: e.target.value})}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="form-control"
               >
                 <option value="Direct Sales">Direct Sales</option>
                 <option value="Online">Online</option>
@@ -176,15 +177,15 @@ const AddPackageModal = ({ onClose }) => {
               </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="form-group">
+              <label className="form-label">
                 Status *
               </label>
               <select
                 required
                 value={formData.status}
                 onChange={(e) => setFormData({...formData, status: e.target.value})}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="form-control"
               >
                 <option value="Draft">Draft</option>
                 <option value="Confirmed">Confirmed</option>
@@ -194,56 +195,57 @@ const AddPackageModal = ({ onClose }) => {
               </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="form-group">
+              <label className="form-label">
                 Customer Name
               </label>
               <input
                 type="text"
                 value={formData.customerName}
                 onChange={(e) => setFormData({...formData, customerName: e.target.value})}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="form-control"
                 placeholder="Enter customer name"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="form-group">
+              <label className="form-label">
                 Customer Email
               </label>
               <input
                 type="email"
                 value={formData.customerEmail}
                 onChange={(e) => setFormData({...formData, customerEmail: e.target.value})}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
+                className="form-control"
                 placeholder="Enter customer email"
               />
             </div>
           </div>
 
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="block text-sm font-medium text-gray-700">
+          <div className="form-group">
+            <div className="flex-between mb-2">
+              <label className="form-label">
                 Items *
               </label>
               <button
                 type="button"
                 onClick={addItem}
-                className="text-sm text-blue-600 hover:text-blue-700"
+                className="add-item-btn"
               >
-                + Add Item
+                <Plus size={16} />
+                <span>Add Item</span>
               </button>
             </div>
             
-            <div className="space-y-3">
+            <div className="items-list">
               {formData.items.map((item, index) => (
-                <div key={index} className="flex gap-3 items-start">
-                  <div className="flex-grow">
+                <div key={index} className="item-row">
+                  <div className="item-select">
                     <select
                       required
                       value={item.itemId}
                       onChange={(e) => updateItem(index, 'itemId', e.target.value)}
-                      className="w-full rounded-md border border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="form-control"
                     >
                       <option value="">Select an item</option>
                       {mockItems.map(item => (
@@ -253,21 +255,21 @@ const AddPackageModal = ({ onClose }) => {
                       ))}
                     </select>
                   </div>
-                  <div className="w-24">
+                  <div className="item-quantity">
                     <input
                       type="number"
                       min="1"
                       required
                       value={item.quantity}
                       onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value))}
-                      className="w-full rounded-md border border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="form-control"
                     />
                   </div>
                   {formData.items.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeItem(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="remove-item-btn"
                     >
                       <X size={20} />
                     </button>
@@ -277,8 +279,8 @@ const AddPackageModal = ({ onClose }) => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="form-group">
+            <label className="form-label">
               Total Amount *
             </label>
             <input
@@ -287,21 +289,21 @@ const AddPackageModal = ({ onClose }) => {
               required
               value={formData.totalAmount}
               onChange={(e) => setFormData({...formData, totalAmount: parseFloat(e.target.value)})}
-              className="w-full rounded-md border border-gray-300 p-2 focus:ring-blue-500 focus:border-blue-500"
+              className="form-control"
             />
           </div>
 
-          <div className="flex justify-end gap-3">
+          <div className="form-actions">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              className="btn btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="btn btn-primary"
             >
               Add Package
             </button>
@@ -316,47 +318,47 @@ const PackageCard = ({ package: pkg }) => {
   const { viewType } = usePackages();
   
   const listView = (
-    <div className="bg-white rounded-md shadow-sm p-4 border border-gray-200 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between">
-        <div className="flex flex-col">
+    <div className="package-card">
+      <div className="package-card-header">
+        <div className="flex-col">
           <div className="flex items-center mb-1">
             <input 
               type="checkbox" 
-              className="mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              className="package-card-checkbox"
             />
-            <h3 className="font-medium text-gray-900">{pkg.name}</h3>
+            <h3 className="package-card-title">{pkg.name}</h3>
           </div>
-          <div className="flex flex-wrap gap-x-4 text-sm text-gray-500">
+          <div className="package-card-details">
             <span>{pkg.packageId}</span>
             <span>{pkg.orderId}</span>
           </div>
-          <div className="flex flex-wrap gap-x-4 text-sm text-gray-500 mt-1">
+          <div className="package-card-details mt-1">
             {pkg.carrier && <span>{pkg.carrier}</span>}
             <span>{pkg.date}</span>
           </div>
         </div>
-        <span className="font-medium text-gray-900">{pkg.amount}</span>
+        <span className="package-card-amount">${pkg.amount}</span>
       </div>
     </div>
   );
   
   const gridView = (
-    <div className="bg-white rounded-md shadow-sm p-4 border border-gray-200 hover:shadow-md transition-shadow">
-      <div className="flex items-start gap-3">
+    <div className="package-card">
+      <div className="package-card-header">
         <input 
           type="checkbox" 
-          className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          className="package-card-checkbox"
         />
-        <div className="flex flex-col flex-grow">
-          <h3 className="font-medium text-gray-900 mb-1">{pkg.name}</h3>
-          <div className="grid grid-cols-2 gap-y-1 text-sm text-gray-500">
+        <div className="flex-col flex-grow">
+          <h3 className="package-card-title mb-1">{pkg.name}</h3>
+          <div className="package-card-details">
             <span>{pkg.packageId}</span>
             <span>{pkg.orderId}</span>
             {pkg.carrier && <span>{pkg.carrier}</span>}
             <span>{pkg.date}</span>
           </div>
         </div>
-        <span className="font-medium text-gray-900">{pkg.amount}</span>
+        <span className="package-card-amount">${pkg.amount}</span>
       </div>
     </div>
   );
@@ -364,19 +366,19 @@ const PackageCard = ({ package: pkg }) => {
   return viewType === 'list' ? listView : gridView;
 };
 
-const PackageSection = ({ title, packages, bgColor, borderColor }) => {
+const PackageSection = ({ title, packages, status }) => {
   const { viewType } = usePackages();
 
   return (
-    <div className={`rounded-lg overflow-hidden ${bgColor} border ${borderColor} transition-all duration-300`}>
-      <div className="flex items-center justify-between p-4 border-b border-opacity-30 border-gray-400">
-        <h2 className="font-semibold text-gray-800">{title}</h2>
+    <div className={`package-section ${status}`}>
+      <div className="package-section-header">
+        <h2 className="package-section-title">{title}</h2>
         <AlignJustify size={18} className="text-gray-500" />
       </div>
       
-      <div className={`p-4 ${viewType === 'grid' ? 'space-y-4' : 'space-y-2'}`}>
+      <div className="package-section-content">
         {packages.length === 0 ? (
-          <div className="text-center p-4 text-gray-500">No packages found</div>
+          <div className="text-center text-gray-500 p-4">No packages found</div>
         ) : (
           packages.map((pkg) => (
             <PackageCard key={pkg.id} package={pkg} />
@@ -398,57 +400,59 @@ const Header = () => {
   } = usePackages();
 
   return (
-    <header className="bg-white shadow-sm py-4 px-6 sticky top-0 z-10">
-      <div className="container mx-auto">
+    <header className="header">
+      <div className="header-container">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <h1 className="text-2xl font-bold text-gray-800">All Packages</h1>
+          <h1 className="header-title">All Packages</h1>
           
-          <div className="flex items-center gap-3">
-            <div className="relative flex-grow md:w-64">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search size={18} className="text-gray-400" />
+          <div className="header-controls">
+            <div className="search-container">
+              <div className="search-icon">
+                <Search size={18} />
               </div>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search packages..."
-                className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="search-input"
               />
             </div>
 
-            <button
-              onClick={toggleAddPackage}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2"
-            >
-              <Plus size={20} />
-              <span>New</span>
-            </button>
-            
-            <div className="inline-flex border border-gray-300 rounded-md overflow-hidden">
-              <button 
-                onClick={() => viewType !== 'list' && toggleViewType()}
-                className={`p-2 ${viewType === 'list' ? 'bg-gray-100 text-blue-600' : 'bg-white text-gray-600'} transition-colors`}
-                aria-label="List view"
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleAddPackage}
+                className="new-package-btn"
               >
-                <List size={20} />
+                <Plus size={20} />
+                <span>New</span>
               </button>
+              
+              <div className="view-toggle">
+                <button 
+                  onClick={() => viewType !== 'list' && toggleViewType()}
+                  className={`view-btn ${viewType === 'list' ? 'active' : ''}`}
+                  aria-label="List view"
+                >
+                  <List size={20} />
+                </button>
+                <button 
+                  onClick={() => viewType !== 'grid' && toggleViewType()}
+                  className={`view-btn ${viewType === 'grid' ? 'active' : ''}`}
+                  aria-label="Grid view"
+                >
+                  <LayoutGrid size={20} />
+                </button>
+              </div>
+              
               <button 
-                onClick={() => viewType !== 'grid' && toggleViewType()}
-                className={`p-2 ${viewType === 'grid' ? 'bg-gray-100 text-blue-600' : 'bg-white text-gray-600'} transition-colors`}
-                aria-label="Grid view"
+                onClick={toggleHelpGuide}
+                className="help-btn"
+                aria-label="Help"
               >
-                <LayoutGrid size={20} />
+                <HelpCircle size={20} />
               </button>
             </div>
-            
-            <button 
-              onClick={toggleHelpGuide}
-              className="p-2 bg-orange-500 hover:bg-orange-600 text-white rounded-full transition-colors"
-              aria-label="Help"
-            >
-              <HelpCircle size={20} />
-            </button>
           </div>
         </div>
       </div>
@@ -483,71 +487,71 @@ const HelpGuide = () => {
   }, [toggleHelpGuide]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div className="modal-overlay">
       <div 
         ref={modalRef} 
-        className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-fadeIn"
+        className="modal-content"
       >
-        <div className="border-b p-4 flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+        <div className="modal-header">
+          <h2 className="modal-title flex items-center">
             <HelpCircle className="mr-2 text-orange-500" size={24} />
             Package Tracking Help Guide
           </h2>
           <button 
             onClick={toggleHelpGuide}
-            className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            className="modal-close-btn"
           >
             <X size={20} />
           </button>
         </div>
         
-        <div className="p-6 space-y-6">
-          <section>
-            <h3 className="text-lg font-medium text-gray-800 mb-3">Overview</h3>
-            <p className="text-gray-600">
+        <div className="modal-body">
+          <section className="help-guide-section">
+            <h3 className="help-guide-section-title">Overview</h3>
+            <p className="help-guide-section-content">
               The Package Tracking dashboard provides a comprehensive view of your packages in different stages of the
               shipping process. Packages are organized into three categories: Not Shipped, Shipped, and Delivered.
             </p>
           </section>
           
-          <section>
-            <h3 className="text-lg font-medium text-gray-800 mb-3">Features</h3>
+          <section className="help-guide-section">
+            <h3 className="help-guide-section-title">Features</h3>
             <ul className="space-y-3">
-              <li className="flex items-start">
-                <Search className="mt-1 mr-3 text-blue-500 flex-shrink-0" size={18} />
+              <li className="help-guide-item">
+                <Search className="help-guide-item-icon" size={18} />
                 <div>
-                  <p className="font-medium text-gray-700">Search</p>
-                  <p className="text-gray-600">
+                  <p className="help-guide-item-title">Search</p>
+                  <p className="help-guide-item-desc">
                     Use the search bar to filter packages by name, package ID, order ID, or carrier.
                   </p>
                 </div>
               </li>
               
-              <li className="flex items-start">
-                <List className="mt-1 mr-3 text-blue-500 flex-shrink-0" size={18} />
+              <li className="help-guide-item">
+                <List className="help-guide-item-icon" size={18} />
                 <div>
-                  <p className="font-medium text-gray-700">List View</p>
-                  <p className="text-gray-600">
+                  <p className="help-guide-item-title">List View</p>
+                  <p className="help-guide-item-desc">
                     Display packages in a vertical list format, ideal for scanning through many packages.
                   </p>
                 </div>
               </li>
               
-              <li className="flex items-start">
-                <LayoutGrid className="mt-1 mr-3 text-blue-500 flex-shrink-0" size={18} />
+              <li className="help-guide-item">
+                <LayoutGrid className="help-guide-item-icon" size={18} />
                 <div>
-                  <p className="font-medium text-gray-700">Grid View</p>
-                  <p className="text-gray-600">
+                  <p className="help-guide-item-title">Grid View</p>
+                  <p className="help-guide-item-desc">
                     Display packages in a side-by-side grid layout, showing all package categories at once.
                   </p>
                 </div>
               </li>
               
-              <li className="flex items-start">
-                <Package className="mt-1 mr-3 text-blue-500 flex-shrink-0" size={18} />
+              <li className="help-guide-item">
+                <Package className="help-guide-item-icon" size={18} />
                 <div>
-                  <p className="font-medium text-gray-700">Package Categories</p>
-                  <p className="text-gray-600">
+                  <p className="help-guide-item-title">Package Categories</p>
+                  <p className="help-guide-item-desc">
                     Packages are color-coded by status: blue for not shipped, yellow for shipped, and green for delivered.
                   </p>
                 </div>
@@ -555,9 +559,9 @@ const HelpGuide = () => {
             </ul>
           </section>
           
-          <section>
-            <h3 className="text-lg font-medium text-gray-800 mb-3">Package Information</h3>
-            <p className="text-gray-600 mb-3">
+          <section className="help-guide-section">
+            <h3 className="help-guide-section-title">Package Information</h3>
+            <p className="help-guide-section-content mb-3">
               Each package card displays the following information:
             </p>
             <ul className="list-disc list-inside text-gray-600 space-y-1 ml-2">
@@ -570,8 +574,8 @@ const HelpGuide = () => {
             </ul>
           </section>
           
-          <section>
-            <h3 className="text-lg font-medium text-gray-800 mb-3">Tips</h3>
+          <section className="help-guide-section">
+            <h3 className="help-guide-section-title">Tips</h3>
             <ul className="list-disc list-inside text-gray-600 space-y-1 ml-2">
               <li>Use the search feature to quickly find specific packages</li>
               <li>Switch between list and grid views based on your preference</li>
@@ -584,7 +588,7 @@ const HelpGuide = () => {
         <div className="border-t p-4 bg-gray-50 flex justify-end">
           <button 
             onClick={toggleHelpGuide}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="btn btn-primary"
           >
             Close Guide
           </button>
@@ -602,24 +606,21 @@ const PackageContainer = () => {
   const deliveredPackages = getPackagesByStatus('delivered');
 
   return (
-    <div className={`grid gap-6 ${viewType === 'list' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3'}`}>
+    <div className={`package-container ${viewType === 'list' ? 'list-view' : 'grid-view'}`}>
       <PackageSection 
         title="Packages, Not Shipped" 
         packages={notShippedPackages} 
-        bgColor="bg-blue-50"
-        borderColor="border-blue-200"
+        status="not-shipped"
       />
       <PackageSection 
         title="Shipped Packages" 
         packages={shippedPackages} 
-        bgColor="bg-yellow-50"
-        borderColor="border-yellow-200"
+        status="shipped"
       />
       <PackageSection 
         title="Delivered Packages" 
         packages={deliveredPackages} 
-        bgColor="bg-green-50"
-        borderColor="border-green-200"
+        status="delivered"
       />
     </div>
   );
@@ -679,9 +680,9 @@ const PackageTracker = () => {
         toggleAddPackage
       }}
     >
-      <div className="min-h-screen bg-gray-50 pb-10">
+      <div className="package-tracker">
         <Header />
-        <main className="container mx-auto px-4 py-6">
+        <main>
           <PackageContainer />
         </main>
         {showHelpGuide && <HelpGuide />}

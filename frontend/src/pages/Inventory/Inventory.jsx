@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Inventory.css';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/items';
+const API_BASE_URL = 'http://192.168.252.193:8000/api/v1/items';
 
 const ItemModal = ({ isOpen, onClose, onSubmit, initialData, warehouses }) => {
   const [formData, setFormData] = useState({
@@ -286,7 +286,7 @@ export default function InventoryManagement() {
         setLoading(true);
         const [itemsRes, warehousesRes] = await Promise.all([
           axios.get(API_BASE_URL),
-          axios.get('http://localhost:8000/api/v1/warehouses')
+          axios.get('http://192.168.252.193:8000/api/v1/warehouses')
         ]);
         setItems(itemsRes.data);
         setWarehouses(warehousesRes.data);

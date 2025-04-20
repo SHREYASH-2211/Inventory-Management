@@ -29,7 +29,7 @@ const SignupPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/users/register', {
+      const response = await fetch('http://192.168.252.193:8000/api/v1/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -60,10 +60,9 @@ const SignupPage = () => {
   return (
     <div className="container-fluid min-vh-100 d-flex">
       <div className="col-md-6 d-flex flex-column justify-content-center align-items-center bg-white p-5">
-        <img src="media/images/logo.png" style={{ width: '40%' }} alt="Logo" />
 
         <h6 className="text-muted">Start your journey</h6>
-        <h3 className="fw-bold mb-4">Sign Up to InsideBox</h3>
+        <h3 className="fw-bold mb-4">Sign Up to Stockwise</h3>
 
         <form className="w-100" style={{ maxWidth: '350px' }} onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -167,7 +166,7 @@ const SignupPage = () => {
       <div
         className="col-md-6 d-none d-md-block"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1554913660-fc17f5227a6b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJsdWUlMjBwYWludGluZ3xlbnwwfHwwfHx8MA==")',
+          backgroundImage: 'url("./bg.jpeg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

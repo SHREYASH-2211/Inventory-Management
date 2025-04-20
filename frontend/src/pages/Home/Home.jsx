@@ -9,6 +9,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts"
 import "./Home.css"
+import Chatbot from "../../components/Chatbot"
 
 export default function InventoryDashboard() {
   const [activeTab, setActiveTab] = useState("Dashboard")
@@ -117,7 +118,7 @@ export default function InventoryDashboard() {
             <div className="user-icon"><User size={24} /></div>
           </div>
           <div className="helpline">
-            <div>Zoho Inventory India Helpline: <strong>18003093036</strong></div>
+            <div>Stockwise Inventory India Helpline: <strong>18003093036</strong></div>
             <div className="helpline-hours">Mon - Fri • 9:00 AM - 7:00 PM • Toll Free</div>
           </div>
         </div>
@@ -234,13 +235,13 @@ export default function InventoryDashboard() {
           {/* Footer */}
           <footer className="dashboard-footer">
             <div className="footer-section">
-              <h4>OTHER ZOHO APPS</h4>
+              <h4>OTHER Stockwise APPS</h4>
               <ul>
-                <li>Zoho CRM</li>
-                <li>Zoho Books</li>
-                <li>Zoho Mail</li>
-                <li>Zoho Projects</li>
-                <li>Zoho People</li>
+                <li>Stockwise CRM</li>
+                <li>Stockwise Books</li>
+                <li>Stockwise Mail</li>
+                <li>Stockwise Projects</li>
+                <li>Stockwise People</li>
               </ul>
             </div>
             <div className="footer-section">
@@ -269,6 +270,7 @@ export default function InventoryDashboard() {
             </div>
           </footer>
         </div>
+        <Chatbot/>
       </div>
     </div>
   )

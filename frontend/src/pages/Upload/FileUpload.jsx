@@ -1,261 +1,109 @@
-import { useState, useRef, useEffect } from 'react';
-import {
-  FiUploadCloud,
-  FiFile,
-  FiCheckCircle,
-  FiAlertCircle,
-  FiRefreshCw,
-  FiClipboard,
-  FiUpload,
-  FiCheckSquare
-} from 'react-icons/fi';
+import React, { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import axios from "axios";
+import { toast } from "react-toastify";
 import './FileUpload.css';
 
-const UploadGuide = ({ currentStep }) => {
-  const steps = [
-    {
-      id: 1,
-      title: 'Select Your Document',
-      description: 'Drag and drop your document into the upload area or click to browse your files.',
-      icon: <FiClipboard className="step-icon" />,
-      details: [
-        'Supported file types: PDF, DOCX, DOC, TXT',
-        'Maximum file size: 10MB',
-        'Make sure your document is complete and correctly formatted',
-      ],
-    },
-    {
-      id: 2,
-      title: 'Upload in Progress',
-      description: 'Your document is being uploaded and processed. This may take a few moments.',
-      icon: <FiUpload className="step-icon" />,
-      details: [
-        'Do not close your browser during upload',
-        'The progress bar will show the upload status',
-        'Your document is being securely transferred',
-      ],
-    },
-    {
-      id: 3,
-      title: 'Upload Complete',
-      description: 'Your document has been successfully uploaded and is now available for use.',
-      icon: <FiCheckSquare className="step-icon" />,
-      details: [
-        'You will receive an email confirmation',
-        'Your document is now stored securely',
-        'You can upload another document or continue to the next step of your process',
-      ],
-    },
-  ];
+export default function ImportCSV() {
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
-  return (
-    <div className="upload-guide">
-      <h2 className="guide-title">Upload Guide</h2>
-      <p className="guide-subtitle">Follow these steps to successfully upload your document</p>
-
-      <div className="steps-container">
-        {steps.map((step) => (
-          <div
-            key={step.id}
-            className={`step ${currentStep === step.id ? 'active' : ''} ${currentStep > step.id ? 'completed' : ''}`}
-          >
-            <div className="step-header">
-              <div className="step-number">{step.id}</div>
-              <div className="step-content">
-                <h3 className="step-title">{step.title}</h3>
-                <p className="step-description">{step.description}</p>
-              </div>
-              <div className="step-icon-container">{step.icon}</div>
-            </div>
-            <div className="step-details">
-              <ul>
-                {step.details.map((detail, index) => (
-                  <li key={index}>{detail}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="what-to-expect">
-        <h3>What to Expect After Upload</h3>
-        <ul>
-          <li>Automatic document verification and processing</li>
-          <li>Email notification when processing is complete</li>
-          <li>Secure document storage with password protection</li>
-          <li>Ability to share documents with authorized users</li>
-        </ul>
-      </div>
-    </div>
-  );
-};
-
-const UploadArea = ({ onFileUpload, uploadedFile, uploadStatus, uploadProgress, onReset }) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const fileInputRef = useRef(null);
-
-  const handleDragEvents = (e, dragging = false) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(dragging);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-    const files = e.dataTransfer?.files;
-    if (files?.length > 0) {
-      onFileUpload(files[0]);
+  const onDrop = useCallback((acceptedFiles) => {
+    if (acceptedFiles.length > 0) {
+      const selectedFile = acceptedFiles[0];
+      // Verify it's a CSV file by extension as MIME types can be unreliable
+      if (!selectedFile.name.toLowerCase().endsWith('.csv')) {
+        toast.error("Please upload a valid CSV file");
+        return;
+      }
+      setFile(selectedFile);
     }
-  };
+  }, []);
 
-  const handleFileInputChange = (e) => {
-    const files = e.target.files;
-    if (files?.length > 0) {
-      onFileUpload(files[0]);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'text/csv': ['.csv'],
+      'application/vnd.ms-excel': ['.csv'] // Some CSV files may have this MIME type
+    },
+    maxFiles: 1
+  });
+
+  const handleUpload = async () => {
+    if (!file) {
+      toast.error("Please select a CSV file first");
+      return;
     }
-  };
 
-  const renderUploadContent = () => {
-    switch (uploadStatus) {
-      case 'idle':
-        return (
-          <>
-            <FiUploadCloud className="upload-icon" />
-            <h3 className="upload-title">Drag and drop your document</h3>
-            <p className="upload-subtitle">or</p>
-            <button className="browse-button" onClick={() => fileInputRef.current?.click()}>
-              Browse Files
-            </button>
-            <p className="file-hint">Accepted file types: PDF, DOCX, DOC, TXT (max 10MB)</p>
-            <input
-              type="file"
-              ref={fileInputRef}
-              className="file-input"
-              onChange={handleFileInputChange}
-              accept=".pdf,.docx,.doc,.txt"
-              hidden
-            />
-          </>
-        );
+    const formData = new FormData();
+    formData.append("file", file); // Ensure this matches your backend expectation
 
-      case 'uploading':
-        return (
-          <div className="upload-progress-container">
-            <FiFile className="file-icon" />
-            <p className="file-name">{uploadedFile?.name}</p>
-            <div className="progress-bar-container">
-              <div className="progress-bar" style={{ width: `${uploadProgress}%` }} />
-            </div>
-            <p className="progress-text">Uploading... {uploadProgress}%</p>
-          </div>
-        );
+    try {
+      setUploading(true);
+      const token = localStorage.getItem("accessToken");
 
-      case 'success':
-        return (
-          <div className="upload-complete">
-            <FiCheckCircle className="success-icon" />
-            <h3 className="upload-title">Upload Complete!</h3>
-            <p className="file-name">{uploadedFile?.name}</p>
-            <p className="success-message">Your document has been successfully uploaded.</p>
-            <button className="reset-button" onClick={onReset}>
-              <FiRefreshCw /> Upload Another Document
-            </button>
-          </div>
-        );
+      // Add console log to verify the file is in FormData
+      console.log("FormData entries:", Array.from(formData.entries()));
 
-      case 'error':
-        return (
-          <div className="upload-error">
-            <FiAlertCircle className="error-icon" />
-            <h3 className="upload-title">Upload Failed</h3>
-            <p className="error-message">There was an error uploading your document. Please try again.</p>
-            <button className="reset-button" onClick={onReset}>
-              <FiRefreshCw /> Try Again
-            </button>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div
-      className={`upload-area ${isDragging ? 'dragging' : ''} ${uploadStatus !== 'idle' ? 'has-file' : ''}`}
-      onDragEnter={(e) => handleDragEvents(e, true)}
-      onDragOver={(e) => handleDragEvents(e, true)}
-      onDragLeave={(e) => handleDragEvents(e, false)}
-      onDrop={handleDrop}
-    >
-      {renderUploadContent()}
-    </div>
-  );
-};
-
-const FileUpload = () => {
-  const [uploadedFile, setUploadedFile] = useState(null);
-  const [uploadStatus, setUploadStatus] = useState('idle');
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [currentStep, setCurrentStep] = useState(1);
-
-  useEffect(() => {
-    let intervalId;
-
-    if (uploadStatus === 'uploading') {
-      intervalId = setInterval(() => {
-        setUploadProgress((prev) => {
-          const newProgress = prev + 10;
-          if (newProgress >= 100) {
-            clearInterval(intervalId);
-            setUploadStatus('success');
-            setCurrentStep(3);
-            return 100;
+      const response = await axios.post(
+        "http://192.168.252.193:8000/api/v1/items/import",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`
           }
-          return newProgress;
-        });
-      }, 300);
+        }
+      );
+
+      toast.success(`✅ Imported ${response.data.importedCount} items`);
+      setFile(null); // Reset after successful upload
+    } catch (error) {
+      console.error("Import failed:", error);
+      let errorMessage = "❌ Import failed";
+      
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+        
+        errorMessage = error.response.data?.message || errorMessage;
+      } else if (error.request) {
+        console.error("Request:", error.request);
+        errorMessage = "No response received from server";
+      }
+      
+      toast.error(errorMessage);
+    } finally {
+      setUploading(false);
     }
-
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [uploadStatus]);
-
-  const handleFileUpload = (file) => {
-    if (!file) return;
-
-    setUploadedFile(file);
-    setUploadStatus('uploading');
-    setUploadProgress(0);
-    setCurrentStep(2);
-  };
-
-  const handleReset = () => {
-    setUploadedFile(null);
-    setUploadStatus('idle');
-    setUploadProgress(0);
-    setCurrentStep(1);
   };
 
   return (
-    <div className="file-upload-page">
-      <h1 className="page-title">File Upload <span>(document upload)</span></h1>
-      <div className="upload-container">
-        <UploadGuide currentStep={currentStep} />
-        <UploadArea
-          onFileUpload={handleFileUpload}
-          uploadedFile={uploadedFile}
-          uploadStatus={uploadStatus}
-          uploadProgress={uploadProgress}
-          onReset={handleReset}
-        />
+    <div className="import-csv-container">
+      <h2>📥 Import Inventory CSV</h2>
+      <div {...getRootProps({ className: "dropzone" })}>
+        <input {...getInputProps()} />
+        {isDragActive ? (
+          <p>Drop your CSV file here...</p>
+        ) : (
+          <p>Drag & drop CSV file here, or click to browse</p>
+        )}
       </div>
+
+      {file && (
+        <div className="file-info">
+          <strong>Selected:</strong> {file.name} ({Math.round(file.size / 1024)} KB)
+        </div>
+      )}
+
+      <button 
+        className="upload-btn" 
+        onClick={handleUpload}
+        disabled={uploading || !file}
+      >
+        {uploading ? "Uploading..." : "Upload & Import"}
+      </button>
     </div>
   );
-};
-
-export default FileUpload;
+}

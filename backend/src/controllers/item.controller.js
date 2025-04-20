@@ -2,8 +2,71 @@ import asyncHandler from '../utils/asyncHandler.js';
 import { Item } from '../models/item.model.js';
 import { Warehouse } from '../models/warehouse.model.js';
 import { sendLowStockAlert } from "../utils/sendEmail.js";
-
-
+import fs from "fs";
+import csvParser from "csv-parser";
+export const importItemsFromCSV = asyncHandler(async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+  
+    const filePath = req.file.path;
+    const importedItems = [];
+  
+    fs.createReadStream(filePath)
+      .pipe(csvParser())
+      .on("data", (row) => {
+        try {
+          const item = {
+            name: row.name?.trim(),
+            sku: row.sku?.trim(),
+            type: row.type?.trim() || "Goods",
+            description: row.description?.trim(),
+            price: parseFloat(row.price),
+            quantity: parseInt(row.quantity),
+            lowStockThreshold: parseInt(row.lowStockThreshold),
+            warehouse: row.warehouse?.trim()
+          };
+  
+          // Skip invalid rows
+          if (
+            !item.name ||
+            !item.sku ||
+            isNaN(item.price) ||
+            isNaN(item.quantity) ||
+            isNaN(item.lowStockThreshold) ||
+            !item.warehouse
+          ) {
+            console.warn("⚠️ Skipping invalid row:", row);
+          } else {
+            importedItems.push(item);
+          }
+        } catch (err) {
+          console.error("Error parsing row:", row, err);
+        }
+      })
+      .on("end", async () => {
+        try {
+          if (importedItems.length === 0) {
+            return res.status(400).json({ message: "❌ No valid items to import" });
+          }
+  
+          const inserted = await Item.insertMany(importedItems);
+          fs.unlinkSync(filePath);
+  
+          res.status(200).json({
+            message: "✅ Items imported successfully",
+            importedCount: inserted.length,
+            data: inserted,
+          });
+        } catch (error) {
+          console.error("❌ Import error:", error);
+          res.status(500).json({
+            message: "❌ Import failed",
+            error: error.message,
+          });
+        }
+      });
+  });
 // CREATE
 export const createItem = asyncHandler(async (req, res) => {
   console.log("➡️ Creating item with data:", req.body);
@@ -44,7 +107,20 @@ export const createItem = asyncHandler(async (req, res) => {
   res.status(201).json(item);
 });
 
-    
+    //search item by name
+export const searchItemByName = asyncHandler(async (req, res) => {
+  const { name } = req.query;
+  if (!name) {
+    return res.status(400).json({ message: "Name query parameter is required" });
+  }
+
+  const items = await Item.find({ name: { $regex: name, $options: "i" } }).populate("warehouse");
+  if (items.length === 0) {
+    return res.status(404).json({ message: "No items found" });
+  }
+
+  res.status(200).json(items);
+});
 
 // READ
 export const getItems = asyncHandler(async (req, res) => {
