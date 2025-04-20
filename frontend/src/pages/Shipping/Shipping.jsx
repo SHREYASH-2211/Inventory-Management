@@ -209,21 +209,7 @@ const ShippingPage = () => {
                 {integration.actionText}
               </button>
             </div>
-            {integration.partners && (
-              <div className="delivery-partners">
-                <p className="partners-label">Delivery Partners:</p>
-                <div className="partner-logos">
-                  {integration.partners.map((partner, i) => (
-                    <div className="partner-logo" key={`partner-${i}`}>
-                      <img src={partner.logo} alt={partner.name} style={{ height: '30px' }} />
-                    </div>
-                  ))}
-                </div>
-                <button className="view-more-button" onClick={redirectToViewMore}>
-                  View More
-                </button>
-              </div>
-            )}
+            
           </div>
         </div>
       ))}
